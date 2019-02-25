@@ -4,8 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.messbees.mqttgps.MainActivity;
-
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.DisconnectedBufferOptions;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -24,7 +22,6 @@ public class PahoMqttClient {
 
     private static final String TAG = "PahoMqttClient";
     private MqttAndroidClient mqttAndroidClient;
-    private MainActivity activity;
 
     public MqttAndroidClient getMqttClient(Context context, String brokerUrl, String clientId) {
 
@@ -132,4 +129,3 @@ public class PahoMqttClient {
     }
 
 }
-
