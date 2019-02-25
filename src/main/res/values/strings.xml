@@ -3,7 +3,7 @@
     <string name="get_gps_button">Get GPS</string>
     <string name="post_button">Post</string>
     <string name="post_success">Success!</string>
-    <string name="post_waiting">Waiting...</string>
+    <string name="post_waiting">Waiting…</string>
     <string name="post_fail">Failed</string>
     <string name="err_no_permission">Error: No permission</string>
     <string name="err_connect">Error: Connection failed</string>
