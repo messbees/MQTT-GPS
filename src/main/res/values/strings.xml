@@ -2,4 +2,5 @@
     <string name="app_name">MQTT GPS</string>
     <string name="get_gps_button">Get GPS</string>
     <string name="post_button">Post</string>
+    <string name="err_no_permission">Error: No permission</string>
 </resources>
