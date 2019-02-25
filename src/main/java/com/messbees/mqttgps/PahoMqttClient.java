@@ -1,8 +1,10 @@
-package com.messbees.smartaquarium;
+package com.messbees.mqttgps;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
+
+import com.messbees.mqttgps.MainActivity;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.DisconnectedBufferOptions;
@@ -130,5 +132,4 @@ public class PahoMqttClient {
     }
 
 }
-
 
