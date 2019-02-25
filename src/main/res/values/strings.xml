@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MQTT GPS</string>
+    <string name="get_gps_button">Get GPS</string>
+    <string name="post_button">Post</string>
 </resources>
