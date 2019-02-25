@@ -19,7 +19,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private static final String TAG = "MainActivity";
     private TextView gpsText;
-    private MyLocationListener locationListener;
     private LocationManager locationManager;
 
     @Override
@@ -32,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ((Button) findViewById(R.id.post_button)).setOnClickListener(this);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationListener = new MyLocationListener();
     }
 
     @Override
