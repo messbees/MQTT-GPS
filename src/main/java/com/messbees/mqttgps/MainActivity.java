@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -15,11 +16,21 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttException;
+
+import java.io.UnsupportedEncodingException;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = "MainActivity";
     private TextView gpsText;
     private LocationManager locationManager;
+    private MqttAndroidClient mqttAndroidClient;
+    private PahoMqttClient pahoMqttClient;
+    private String CLIENT_ID;
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +42,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ((Button) findViewById(R.id.post_button)).setOnClickListener(this);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        CLIENT_ID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        pahoMqttClient = new PahoMqttClient();
+        mqttAndroidClient = pahoMqttClient.getMqttClient(getApplicationContext(), Constants.BROKER_URL, CLIENT_ID);
+
+        brokerConnect();
+
     }
 
     @Override
@@ -66,7 +84,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case R.id.post_button:
-                //TODO: post mqtt message
+                try {
+                    //TODO: form payload
+                    String payload = "";
+                    publishMessage(payload);
+                } catch (MqttException e) {
+                    Log.e(TAG, e.getLocalizedMessage());
+                    Toast.makeText(MainActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                } catch (UnsupportedEncodingException e) {
+                    Log.e(TAG, e.getLocalizedMessage());
+                    Toast.makeText(MainActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                }
                 break;
         }
     }
@@ -86,4 +114,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void brokerConnect() {
+        try {
+            mqttAndroidClient.connect(null, new IMqttActionListener() {
+
+                @Override
+                public void onSuccess(IMqttToken mqttToken) {
+                    try {
+                        Log.d(TAG, "Connected to broker");
+                        pahoMqttClient.subscribe(mqttAndroidClient, Constants.TOPIC, 2);
+                        Log.d(TAG, "Subscribed");
+                    } catch (MqttException e) {
+                        Log.e(TAG, e.getLocalizedMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(IMqttToken arg0, Throwable arg1) {
+                    Log.d(TAG, "Connect failure");
+                }
+            });
+        }
+        catch (MqttException e) {
+            Log.e(TAG, e.getLocalizedMessage());
+        }
+    }
+
+    private void publishMessage(String payload) throws MqttException, UnsupportedEncodingException {
+        pahoMqttClient.publishMessage(mqttAndroidClient, payload, 2, Constants.TOPIC);
+    }
 }
