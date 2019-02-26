@@ -148,12 +148,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String lon = Double.toString(location.getLongitude());
             String accuracy = Float.toString(location.getAccuracy());
             String coords = lat + " " + lon;
-
+            Log.d(TAG, coords);
             gpsText.setText(coords);
             Gson gson = new Gson();
             Message message = new Message(CLIENT_ID, lat, lon, accuracy);
             String json = gson.toJson(message);
-            Log.d(TAG, json);
 
             result = json;
         }
