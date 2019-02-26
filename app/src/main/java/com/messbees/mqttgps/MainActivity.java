@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
             String lat = Double.toString(location.getLatitude());
-            String lon = Double.toString(location.getLatitude());
+            String lon = Double.toString(location.getLongitude());
             String accuracy = Float.toString(location.getAccuracy());
             String coords = lat + " " + lon;
 
